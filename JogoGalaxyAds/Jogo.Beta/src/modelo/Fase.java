@@ -15,6 +15,8 @@ import java.awt.Rectangle;
 
 import javax.swing.Timer;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -25,7 +27,10 @@ public class Fase extends JPanel implements ActionListener {
     private Timer timer;
     private List<Enemy1> enemy1;
     private List<Stars> stars;
-    private boolean emJogo;
+    public int emJogo;
+    public int contador;
+    public int contadorTiros = 90;
+    public int contadorVida = 100;
 
 
     public Fase() {
@@ -45,7 +50,8 @@ public class Fase extends JPanel implements ActionListener {
 
         inicializaInimigos();
         inicializaStars();
-        emJogo = true;
+        emJogo = contadorVida;
+        
 
     }
 
@@ -71,9 +77,12 @@ public class Fase extends JPanel implements ActionListener {
     }
 
     public void paint(Graphics g) {
+
+
         Graphics2D graficos = (Graphics2D) g;
-        if(emJogo == true) {
+        if(emJogo >= 1 ) {
             graficos.drawImage(fundo, 0, 0, null);
+            
 
             for(int u = 0; u < stars.size(); u++) {
                 Stars q = stars.get(u);
@@ -84,6 +93,7 @@ public class Fase extends JPanel implements ActionListener {
             graficos.drawImage(player.getImagem(), player.getX(), player.getY(), this);
 
             List<Tiro> tiros = player.getTiros();
+            
             for(int i = 0; i < tiros.size(); i++) {
                 Tiro m = tiros.get(i);
                 m.load();
@@ -96,13 +106,42 @@ public class Fase extends JPanel implements ActionListener {
                 graficos.drawImage(in.getImagem(), in.getX() , in.getY(), this);
             }
         }
-        else {
-            ImageIcon fimJogo = new ImageIcon("src\\res\\fimdejogo.png");
-            graficos.drawImage(fimJogo.getImage(), 0, 0, null);
+        else{
+            if(contadorVida>=0){
+                ImageIcon fimJogo = new ImageIcon("src\\res\\fimdejogo.png");
+                graficos.drawImage(fimJogo.getImage(), 0, 0, null);
+                //Retry retry = new Retry();
+            }
         }
 
+                
+        /*public void update(){
+            if(contadorVida <=0){
+                contadorVida --;
+            }
+        }*/
+        g.setColor(Color.white);
+
+        g.setFont(new Font("Arial", Font.BOLD, 23));
+        g.drawString("Pontos: " + contador, 1024/2- 60, 30);
+
+        g.setFont(new Font("Arial", Font.BOLD, 23));
+        g.drawString("Tiros: " + contadorTiros , 1024/6- 60, 30);
+
+        /*g.setFont(new Font("Arial", Font.BOLD, 23));
+        g.drawString("Vidas: " + contadorVida, 1024/2+ 300, 30);*/
+
+        g.setColor(Color.white);
+        g.fillRect(1024/2+300, 10, contadorVida+10, 25);
+
+
+        g.setColor(Color.red);
+        g.fillRect(1024/2+300, 10, emJogo+10, 25);
+        
         g.dispose();
     }
+
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -127,10 +166,13 @@ public class Fase extends JPanel implements ActionListener {
         }
 
         List<Tiro> tiros = player.getTiros();
+        contadorTiros --;
         for(int p = 0; p < tiros.size(); p++) {
+            
             Tiro m = tiros.get(p);
                 if(m.isVisivel()) {
                     m.update();
+                    //contadorTiros --;
                 } else {
                     tiros.remove(p);
                 }
@@ -142,6 +184,7 @@ public class Fase extends JPanel implements ActionListener {
                     in.update();
                 } else {
                     enemy1.remove(o);
+                    
                 }
         }
 
@@ -160,7 +203,8 @@ public class Fase extends JPanel implements ActionListener {
 			if(formaNave.intersects(formaEnemy1)) {
 				player.setVisivel(false);
 				tempEnemy1.setVisivel(false);
-				emJogo = false;
+                emJogo = emJogo - 20;
+                
 			}//if
 		}//for
 		
@@ -169,11 +213,13 @@ public class Fase extends JPanel implements ActionListener {
 		for (int j = 0; j < tiros.size(); j++) {
 			Tiro tempTiro = tiros.get(j);
 			formaTiro = tempTiro.getBounds();
+
 			for (int k = 0; k < enemy1.size(); k++) {
-				Enemy1 tempEnemy1 = enemy1.get(k);
+                Enemy1 tempEnemy1 = enemy1.get(k);
 				formaEnemy1 = tempEnemy1.getBounds();
 				if(formaTiro.intersects(formaEnemy1)) {
 					tempEnemy1.setVisivel(false);
+                    contador ++;
 					tempTiro.setVisivel(false);
 				}//if
 			}//for

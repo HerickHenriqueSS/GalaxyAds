@@ -10,6 +10,7 @@ public class Tiro {
     private int x, y;
     private int largura, altura;
     private Boolean isVisivel;
+        
 
     private static final int LARGURA = 938;
     private static int VELOCIDADE = 4;
@@ -20,6 +21,8 @@ public class Tiro {
         this.y = y;
         isVisivel = true;
     }
+
+    
 
     public int getAltura() {
         return altura;
@@ -40,6 +43,7 @@ public class Tiro {
     public void load() {
         ImageIcon referencia = new ImageIcon("src\\res\\TiroSimples.png");
         imagem = referencia.getImage();
+                
 
         this.setLargura(imagem.getWidth(null));
         this.setAltura(imagem.getHeight(null));

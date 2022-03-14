@@ -20,8 +20,11 @@ public class Player implements ActionListener {
     private List <Tiro> tiros;
     private Boolean isVisivel, isTurbo;
     private Timer timer;
+    
+    
 
 
+    
     public Player() {
         this.x = 100;
         this.y = 100;
@@ -44,7 +47,7 @@ public class Player implements ActionListener {
             load();
     }
  
-    
+
     public int getLargura() {
         return largura;
     }
@@ -81,7 +84,9 @@ public class Player implements ActionListener {
 
     public void tiroSimples() {
         this.tiros.add(new Tiro(x+largura, y + (altura/2)));
+              
     }
+
 
     public void turbo() {
         isTurbo = true;
@@ -104,6 +109,7 @@ public class Player implements ActionListener {
 
         if (codigo == KeyEvent.VK_A) {
             tiroSimples();
+                        
         }
 
         if (codigo == KeyEvent.VK_UP) {
@@ -168,5 +174,9 @@ public class Player implements ActionListener {
     public boolean isTurbo() {
         return false;
     }
+
+    
+
+    
 
 }
